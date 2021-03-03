@@ -83,7 +83,7 @@ exports.lambdaHandler = async (event, context) => {
               }
               break;
             } else {
-              respose = {
+              response = {
                 statusCode: 200,
                 body: JSON.stringify({
                   error: "unitNotSpecified",
