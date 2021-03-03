@@ -32,13 +32,86 @@ exports.lambdaHandler = async (event, context) => {
         event.queryStringParameters.command !== undefined
       ) {
         command = event.queryStringParameters.command;
-        if (command == "list") {
-          response = {
-            statusCode: 200,
-            body: JSON.stringify(currencies),
-          };
+        switch (command) {
+          case "list":
+            response = {
+              statusCode: 200,
+              body: JSON.stringify(currencies),
+            };
+            break;
+          case "convert":
+            if (
+              event.queryStringParameters.unit !== null &&
+              event.queryStringParameters.unit !== undefined
+            ) {
+              unit = event.queryStringParameters.unit;
+              for (var i = 0; i < currencies.length; i++) {
+                if (currencies[i] == unit) {
+                  if (
+                    event.queryStringParameters.value !== null &&
+                    event.queryStringParameters.value !== undefined
+                  ) {
+                    value = event.queryStringParameters.value;
+                    amount = value * currency[i].rate;
+                    response = {
+                      statusCode: 200,
+                      body: JSON.stringify({
+                        amount: amount,
+                      }),
+                    };
+                    break;
+                  } else {
+                    response = {
+                      statusCode: 200,
+                      body: JSON.stringify({
+                        error: "valueNotSpecified",
+                      }),
+                    };
+                    break;
+                  }
+                }
+              }
+              response = {
+                statusCode: 200,
+                body: JSON.stringify({
+                  error: "unitNotSupported",
+                  unit: unit,
+                }),
+              };
+              break;
+            } else {
+              respose = {
+                statusCode: 200,
+                body: JSON.stringify({
+                  error: "unitNotSpecified",
+                }),
+              };
+              break;
+            }
+          default:
+            response = {
+              statusCode: 200,
+              body: JSON.stringify({
+                error: "commandNotSupported",
+                command: command,
+              }),
+            };
         }
+      } else {
+        response = {
+          statusCode: 200,
+          body: JSON.stringify({
+            error: "commandNotSpecified",
+          }),
+        };
       }
+    } else {
+      response = {
+        statusCode: 200,
+        body: JSON.stringify({
+          error: "paramsNotSpecified",
+        }),
+      };
     }
   } catch (err) {
     console.log(err);
