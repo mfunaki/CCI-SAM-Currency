@@ -1,7 +1,7 @@
 // const axios = require('axios')
 // const url = 'http://checkip.amazonaws.com/';
 let response;
-let currencies = [
+let currencyArray = [
   { unit: "JPY", rate: 1 },
   { unit: "USD", rate: 104.49 },
   { unit: "EUR", rate: 124.86 },
@@ -37,7 +37,7 @@ exports.lambdaHandler = async (event, context) => {
           case "list":
             response = {
               statusCode: 200,
-              body: JSON.stringify(currencies),
+              body: JSON.stringify(currencyArray),
             };
             break;
           case "convert":
@@ -46,14 +46,14 @@ exports.lambdaHandler = async (event, context) => {
               event.queryStringParameters.unit !== undefined
             ) {
               unit = event.queryStringParameters.unit;
-              for (var i = 0; i < currencies.length; i++) {
-                if (currencies[i].unit == unit) {
+              for (var i = 0; i < currencyArray.length; i++) {
+                if (currencyArray[i].unit == unit) {
                   if (
                     event.queryStringParameters.value !== null &&
                     event.queryStringParameters.value !== undefined
                   ) {
                     value = event.queryStringParameters.value;
-                    amount = value * currency[i].rate;
+                    amount = value * currencyArray[i].rate;
                     response = {
                       statusCode: 200,
                       body: JSON.stringify({
