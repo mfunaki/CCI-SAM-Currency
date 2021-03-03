@@ -10,8 +10,11 @@ jobs:
       - checkout
       - sam/install
       - run: sam build
-      - store_artifacts:
-          path: /home/circleci/project/.aws-sam
+      - persist_to_workspace:
+          root: /home/circleci/project/.aws-sam
+          paths:
+            - build
+            - build.toml
   test_api:
     executor: sam/default
     steps:
