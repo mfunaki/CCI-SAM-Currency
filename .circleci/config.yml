@@ -17,7 +17,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /home/circleci/projects/.aws-sam
+          at: /home/circleci/project/.aws-sam
       - sam/install
       - run: echo "Run yout tests here"
   deploy_api:
@@ -25,7 +25,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /home/circleci/projects/.aws-sam
+          at: /home/circleci/project/.aws-sam
       - sam/install
       - run: sam deploy
 
