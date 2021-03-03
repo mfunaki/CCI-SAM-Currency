@@ -4,15 +4,31 @@ orbs:
   sam: circleci/aws-sam-serverless@2.1.0
 
 jobs:
-  build_app:
+  build_api:
     executor: sam/default
     steps:
       - checkout
       - sam/install
       - run: sam build
+  test_api:
+    executor: sam/default
+    steps:
+      - run: echo "Run yout tests here"
+  deploy_api:
+    executor: sam/defualt
+    steps:
+      - run: sam deploy
 
 workflows:
   my-workflow:
     jobs:
-      - build_app:
+      - build_api:
           context: aws
+      - test_api:
+          context: aws
+          requires:
+            - build_api
+      - deploy_api:
+          context: aws
+          requires:
+            - test_api
