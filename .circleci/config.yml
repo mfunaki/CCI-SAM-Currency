@@ -3,6 +3,20 @@ version: "2.1"
 orbs:
   sam: circleci/aws-sam-serverless@2.1.0
 
+workflows:
+  my_workflow_for_currency:
+    jobs:
+      - build_api:
+          context: aws
+      - test_api:
+          context: aws
+          requires:
+            - build_api
+      - deploy_api:
+          context: aws
+          requires:
+            - test_api
+
 jobs:
   build_api:
     executor: sam/default
@@ -35,17 +49,3 @@ jobs:
           at: /home/circleci/project/.aws-sam
       - sam/install
       - run: sam deploy
-
-workflows:
-  my-workflow:
-    jobs:
-      - build_api:
-          context: aws
-      - test_api:
-          context: aws
-          requires:
-            - build_api
-      - deploy_api:
-          context: aws
-          requires:
-            - test_api
