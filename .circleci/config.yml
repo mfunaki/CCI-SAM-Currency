@@ -15,7 +15,7 @@ jobs:
     steps:
       - run: echo "Run yout tests here"
   deploy_api:
-    executor: sam/defualt
+    executor: sam/default
     steps:
       - run: sam deploy
 
