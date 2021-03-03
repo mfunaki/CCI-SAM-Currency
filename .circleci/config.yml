@@ -10,13 +10,23 @@ jobs:
       - checkout
       - sam/install
       - run: sam build
+      - store_artifacts:
+          path: /home/circleci/project/.aws-sam
   test_api:
     executor: sam/default
     steps:
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/projects/.aws-sam
+      - sam/install
       - run: echo "Run yout tests here"
   deploy_api:
     executor: sam/default
     steps:
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/projects/.aws-sam
+      - sam/install
       - run: sam deploy
 
 workflows:
