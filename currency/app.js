@@ -47,7 +47,7 @@ exports.lambdaHandler = async (event, context) => {
             ) {
               unit = event.queryStringParameters.unit;
               for (var i = 0; i < currencies.length; i++) {
-                if (currencies[i] == unit) {
+                if (currencies[i].unit == unit) {
                   if (
                     event.queryStringParameters.value !== null &&
                     event.queryStringParameters.value !== undefined
