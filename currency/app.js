@@ -1,6 +1,6 @@
 // const axios = require('axios')
 // const url = 'http://checkip.amazonaws.com/';
-let response = null;
+let response;
 let currencies = [
   { unit: "JPY", rate: 1 },
   { unit: "USD", rate: 104.49 },
@@ -22,6 +22,7 @@ let currencies = [
  *
  */
 exports.lambdaHandler = async (event, context) => {
+  response = null;
   try {
     if (
       event.queryStringParameters !== null &&
