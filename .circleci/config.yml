@@ -1,0 +1,18 @@
+version: "2.1"
+
+orbs:
+  sam: circleci/aws-sam-serverless@2.1.0
+
+jobs:
+  build_app:
+    executor: sam/default
+    steps:
+      - checkout
+      - sam/install
+      - run: sam build
+
+workflows:
+  my-workflow:
+    jobs:
+      - build_app:
+          context: aws
