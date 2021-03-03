@@ -59,7 +59,7 @@ exports.lambdaHandler = async (event, context) => {
                         amount: amount,
                       }),
                     };
-                    break;
+                    break; // from for loop
                   } else {
                     response = {
                       statusCode: 200,
@@ -71,13 +71,15 @@ exports.lambdaHandler = async (event, context) => {
                   }
                 }
               }
-              response = {
-                statusCode: 200,
-                body: JSON.stringify({
-                  error: "unitNotSupported",
-                  unit: unit,
-                }),
-              };
+              if (response == null) {
+                response = {
+                  statusCode: 200,
+                  body: JSON.stringify({
+                    error: "unitNotSupported",
+                    unit: unit,
+                  }),
+                };
+              }
               break;
             } else {
               respose = {
