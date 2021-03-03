@@ -22,7 +22,11 @@ jobs:
       - attach_workspace:
           at: /home/circleci/project/.aws-sam
       - sam/install
-      - run: echo "Run yout tests here"
+      - run:
+          command: |
+            cd currency
+            npm init
+            npm test
   deploy_api:
     executor: sam/default
     steps:
