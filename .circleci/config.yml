@@ -48,4 +48,4 @@ jobs:
       - attach_workspace:
           at: /home/circleci/project/.aws-sam
       - sam/install
-      - run: sam deploy
+      - run: sam deploy --no-fail-on-empty-changeset
