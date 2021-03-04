@@ -39,7 +39,7 @@ exports.lambdaHandler = async (event, context) => {
                     event.queryStringParameters.value !== undefined
                   ) {
                     value = event.queryStringParameters.value;
-                    amount = value * currencyArray[i].rate;
+                    amount = Math.round(value * currencies[i].rate * 100) / 100;
                     response = {
                       statusCode: 200,
                       body: JSON.stringify({
