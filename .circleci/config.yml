@@ -57,10 +57,8 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - slack/notify:
-          channel: "https://mfunaki.slack.com/archives/C01C3GQK352"
           event: pass
           template: basic_success_1
       - slack/notify:
-          channel: "https://mfunaki.slack.com/archives/C01C3GQK352"
           event: fail
           template: basic_fail_1
