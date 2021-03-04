@@ -1,4 +1,4 @@
-version: "2.1"
+version: 2.1
 
 orbs:
   sam: circleci/aws-sam-serverless@2.1.0
