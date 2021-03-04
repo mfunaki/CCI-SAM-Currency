@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   sam: circleci/aws-sam-serverless@2.1.0
-  slack: circleci/slack@3.3.0
+  slack: circleci/slack@4.3.0
 
 workflows:
   my_workflow_for_currency:
@@ -17,11 +17,8 @@ workflows:
           context: aws
           requires:
             - test_api
-      - slack/status:
+      - notify:
           context: slack
-          success_message: ':circleci-pass: $CIRCLE_BRANCH のビルドが完了しました。\n:github_octocat: User: $CIRCLE_USERNAME'
-          failure_message: ':circleci-fail: $CIRCLE_BRANCH のビルドが失敗しました。\n:github_octocat: User: $CIRCLE_USERNAME'
-          webhool: "${SLACK_WEBHOOK}"
 
 jobs:
   build_api:
@@ -55,3 +52,15 @@ jobs:
           at: /home/circleci/project/.aws-sam
       - sam/install
       - run: sam deploy --no-fail-on-empty-changeset
+  notify:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - slack/notify:
+          channel: "https://mfunaki.slack.com/archives/C01C3GQK352"
+          event: pass
+          template: basic_success_1
+      - slack/notify:
+          channel: "https://mfunaki.slack.com/archives/C01C3GQK352"
+          event: fail
+          template: basic_fail_1
