@@ -31,5 +31,14 @@ describe("Tests index", function () {
   // commandにconvert, unitにUSD, valueに10が指定されたら、(日本円)1044.9円を返す
   it("converts USD 10 to JPY 1044.9 when command is convert, unit is USD and value is 10", async () => {
     // implement here!
+    let event = {
+        queryStringParameters: { command: "convert", unit: "USD", value: 10 },
+      },
+      context;
+    const result = await app.lambdaHandler(event, context);
+
+    expect(result.statusCode).to.equal(200);
+    const response = JSON.parse(result.body);
+    expect(response).eqls({ amount: 1044.9 });
   });
 });
