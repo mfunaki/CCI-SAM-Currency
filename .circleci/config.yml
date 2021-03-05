@@ -17,16 +17,6 @@ workflows:
           context: aws
           requires:
             - test_api
-#      - notify_on_fail:
-#          context: slack
-#          requires:
-#            - build_api
-#            - test_api
-#            - deploy_api
-#      - notify_on_pass:
-#          context: slack
-#          requires:
-#            - deploy_api
 
 jobs:
   build_api:
@@ -60,17 +50,3 @@ jobs:
           at: /home/circleci/project/.aws-sam
       - sam/install
       - run: sam deploy --no-fail-on-empty-changeset
-  notify_on_fail:
-    docker:
-      - image: "cimg/base:stable"
-    steps:
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-  notify_on_pass:
-    docker:
-      - image: "cimg/base:stable"
-    steps:
-      - slack/notify:
-          event: pass
-          template: basic_success_1
