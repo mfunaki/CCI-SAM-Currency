@@ -17,16 +17,16 @@ workflows:
           context: aws
           requires:
             - test_api
-      - notify_on_fail:
-          context: slack
-          requires:
-            - build_api
-            - test_api
-            - deploy_api
-      - notify_on_pass:
-          context: slack
-          requires:
-            - deploy_api
+#      - notify_on_fail:
+#          context: slack
+#          requires:
+#            - build_api
+#            - test_api
+#            - deploy_api
+#      - notify_on_pass:
+#          context: slack
+#          requires:
+#            - deploy_api
 
 jobs:
   build_api:
