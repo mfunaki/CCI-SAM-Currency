@@ -50,8 +50,13 @@ jobs:
       - run:
           command: |
             cd currency
-            npm install
-            npm test
+            mkdir reports
+      - run:
+          command: npx nyc --silent npx mocha ./test/*.test.js --reporter mocha-junit-reporter
+          environment:
+            MOCHA_FILE: ./reports/mocha/test-results.xml
+      - store_test_results:
+          path: ./reports
   deploy_api:
     executor: sam/default
     steps:
