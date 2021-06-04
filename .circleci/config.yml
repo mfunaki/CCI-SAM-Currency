@@ -34,7 +34,10 @@ jobs:
     steps:
       - checkout
       - sam/install
-      - run: sam build
+      - run:
+          command: |
+            npm install
+            sam build
       - persist_to_workspace:
           root: /home/circleci/project/.aws-sam
           paths:
@@ -46,18 +49,24 @@ jobs:
       - checkout
       - attach_workspace:
           at: /home/circleci/project/.aws-sam
+      - restore_cache:
+          keys:
+            - v1-npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - sam/install
       - run:
           command: |
-            cd currency
             npm install
-            mkdir reports
+            mkdir reports      
       - run:
           command: npx nyc --silent npx mocha ./test/*.test.js --reporter mocha-junit-reporter
           environment:
             MOCHA_FILE: ./reports/mocha/test-results.xml
       - store_test_results:
           path: ./reports
+      - save_cache:
+          key: v1-npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
   deploy_api:
     executor: sam/default
     steps:
