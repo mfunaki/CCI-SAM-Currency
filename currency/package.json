@@ -10,10 +10,12 @@
     "axios": "^0.21.1"
   },
   "scripts": {
-    "test": "mocha tests/unit/"
+    "test": "mocha test/app.test.js"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^8.2.1"
+    "mocha": "^8.2.1",
+    "mocha-junit-reporter": "^2.0.0",
+    "nyc": "^15.1.0"
   }
 }
