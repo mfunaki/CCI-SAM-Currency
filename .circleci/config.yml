@@ -50,6 +50,7 @@ jobs:
       - run:
           command: |
             cd currency
+            npm install
             mkdir reports
       - run:
           command: npx nyc --silent npx mocha ./test/*.test.js --reporter mocha-junit-reporter
