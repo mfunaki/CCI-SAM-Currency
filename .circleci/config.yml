@@ -37,7 +37,7 @@ jobs:
           command: |
             npm install
       - sam/install
-      - sam/build
+      - sam/build:
           template: template.yaml
       - persist_to_workspace:
           root: /home/circleci/project/.aws-sam
