@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  sam: circleci/aws-sam-serverless@2.1.0
+  sam: circleci/aws-sam-serverless@3.1.0
   slack: circleci/slack@4.3.0
 
 workflows:
@@ -33,11 +33,12 @@ jobs:
     executor: sam/default
     steps:
       - checkout
-      - sam/install
       - run:
           command: |
             npm install
-            sam build
+      - sam/install
+      - sam/build
+          template: template.yaml
       - persist_to_workspace:
           root: /home/circleci/project/.aws-sam
           paths:
