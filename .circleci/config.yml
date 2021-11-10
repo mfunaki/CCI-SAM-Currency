@@ -33,14 +33,21 @@ jobs:
     executor: sam/default
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run:
           command: |
             npm install
+      - save_cache:
+          key: v1-npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
       - sam/install
       - sam/build:
           template: template.yaml
       - persist_to_workspace:
-          root: /home/circleci/project/.aws-sam
+          root: ~/project/.aws-sam
           paths:
             - build
             - build.toml
@@ -49,7 +56,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /home/circleci/project/.aws-sam
+          at: ~/project/.aws-sam
       - restore_cache:
           keys:
             - v1-npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
@@ -64,18 +71,16 @@ jobs:
             MOCHA_FILE: ./reports/mocha/test-results.xml
       - store_test_results:
           path: ./reports
-      - save_cache:
-          key: v1-npm-{{ .Branch }}-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
   deploy_api:
     executor: sam/default
     steps:
       - checkout
       - attach_workspace:
-          at: /home/circleci/project/.aws-sam
+          at: ~/project/.aws-sam
       - sam/install
-      - run: sam deploy --no-fail-on-empty-changeset
+      - sam/deploy:
+          stack-name: cci-sam-currency
+          s3-bucket: mayoct-sam-moneyexchange
   notify_on_fail:
     docker:
       - image: "cimg/base:stable"
